@@ -31,7 +31,7 @@ app.use(
 /******************************************************************
  ******* 訪問靜態文件，這裡是訪問所有dist目錄下的靜態資源文件 **************
  ******************************************************************/
-// app.use(express.static(path.resolve(__dirname, './dist')))
+app.use(express.static(path.resolve(__dirname, './dist')))
 app.use(express.static('public')); //to access the files in public folder
 app.use(cors()); // it enables all cors requests
 app.use(fileUpload());
