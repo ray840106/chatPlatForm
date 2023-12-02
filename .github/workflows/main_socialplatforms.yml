@@ -59,4 +59,4 @@ jobs:
           app-name: 'SocialPlatforms'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_99CEE5B50A6443FCB628DED2AA7AB824 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EABADE36EDB54F2CB0032A2991FB1F24 }}
