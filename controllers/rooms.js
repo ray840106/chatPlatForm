@@ -5,6 +5,9 @@ const {getFile} = require("./headFile");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require('uuid');
 
+const SECRET='rayChatPlat'
+const EXPIRES_IN='3h'
+
 /**
  * 查詢聊天室清單
  */
@@ -18,7 +21,7 @@ async function getRooms(request, response) {
         if (!loginToken){
             response.status(200).json({status: 'success', message: 'Success'})
         }
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
         // 驗證信箱格式
@@ -27,7 +30,7 @@ async function getRooms(request, response) {
             let get_file = await getFile('headshot',get_rooms[i]['FRIEND_EMAIL'])
             get_rooms[i]['headshot'] = get_file.data.length>0 ? get_file.data[0].file_path:'';
             get_rooms[i]['unread'] = 0;
-            get_rooms[i]['token'] = jwt.sign(get_rooms[i],  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            get_rooms[i]['token'] = jwt.sign(get_rooms[i],  SECRET, { expiresIn: EXPIRES_IN });
         }
 
         response.status(200).json({
@@ -64,10 +67,10 @@ async function getRoom(request, response) {
     const connection = await conn.getConnection();
     await connection.beginTransaction();
     try {
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
-        let item = jwt.verify(data.item.token, process.env.SECRET);
+        let item = jwt.verify(data.item.token, SECRET);
         let FRIEND_EMAIL = item.FRIEND_EMAIL
 
         // 驗證信箱格式
@@ -91,7 +94,7 @@ async function getRoom(request, response) {
             get_room = await table_rooms.getRoom(connection,login_email,login_email,FRIEND_EMAIL)
         }
 
-        get_room[0]['token'] = jwt.sign(get_room[0],  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+        get_room[0]['token'] = jwt.sign(get_room[0],  SECRET, { expiresIn: EXPIRES_IN });
 
         await connection.commit();
         response.status(200).json({
