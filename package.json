@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "server": "node index.js",
-    "nodemon-server": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "nodemon-server": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
