@@ -5,7 +5,10 @@ const table_own_sticker = require("../models/table_own_sticker");
 const table_sticker_group = require('../models/table_sticker_group');
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require('uuid');
-const {SECRET,EXPIRES_IN}=process.env;
+//const {SECRET,EXPIRES_IN}=process.env;
+
+const SECRET='rayChatPlat'
+const EXPIRES_IN='3h'
 
 /**
  * 查詢自己販賣的貼圖或商店貼圖
