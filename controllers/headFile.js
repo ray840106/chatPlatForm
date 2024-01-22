@@ -3,6 +3,12 @@ const table_files = require("../models/table_files");
 const url = require("url");
 const jwt = require("jsonwebtoken");
 
+const PROTOCOL='https'
+const HOSTNAME='social.azurewebsites.net'
+const SECRET='rayChatPlat'
+const EXPIRES_IN='3h'
+const PORT=8080
+
 /**
  * 查詢檔案
  * @param myFile 檔案
@@ -21,14 +27,14 @@ exports.getFile = async function (POSITION, login_email) {
             let file_id = get_file[i].FILE_ID;
             let file_name = get_file[i].FILE_NAME;
             let formatUrl = {
-                protocol: process.env.PROTOCOL,
-                hostname: process.env.HOSTNAME,
-                port: process.env.PORT,
+                protocol: PROTOCOL,
+                hostname: HOSTNAME,
+                port: PORT,
                 pathname: `/${file_id}/${file_name}`,
             };
             get_file[i]['name'] =  file_name;
             get_file[i]['file_path'] =  url.format(formatUrl);
-            get_file[i]['token'] = jwt.sign(get_file[i],  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            get_file[i]['token'] = jwt.sign(get_file[i],  SECRET, { expiresIn: EXPIRES_IN });
         }
 
         result.data = get_file;
