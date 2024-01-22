@@ -15,7 +15,18 @@ const jwt = require("jsonwebtoken");
 const {HmacSHA256} = require("crypto-js");
 const Base64 = require("crypto-js/enc-base64");
 const ecpay_payment = require("ecpay_aio_nodejs");
-const {LINE_PAY_SECRET,LINE_PAY_VERSION,LINE_PAY_CHANNELID,LINE_PAY_SITE,ECPAY_MERCHANTID, ECPAY_HASHKEY, ECPAY_HASHIV, HOST, SECRET}=process.env;
+//const {LINE_PAY_SECRET,LINE_PAY_VERSION,LINE_PAY_CHANNELID,LINE_PAY_SITE,ECPAY_MERCHANTID, ECPAY_HASHKEY, ECPAY_HASHIV, HOST, SECRET}=process.env;
+
+const SECRET=rayChatPlat
+const HOST=https://social.azurewebsites.net
+const LINE_PAY_CHANNELID=2002302926
+const LINE_PAY_SECRET=8ae7c30ea299c2f7f43da0b73022f6a4
+const LINE_PAY_VERSION=v3
+const LINE_PAY_SITE=https://sandbox-api-pay.line.me
+
+const ECPAY_MERCHANTID=3002599
+const ECPAY_HASHKEY=spPjZn66i0OhqJsQ
+const ECPAY_HASHIV=hT5OJckN45isQTTs
 
 const options = {
     OperationMode: 'Test', //Test or Production
