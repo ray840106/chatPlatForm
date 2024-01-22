@@ -4,7 +4,7 @@ let mysql = require('mysql2/promise');
 const CHAT_HOST='socialplatfroms.mysql.database.azure.com'
 const CHAT_USER='socialplatfroms'
 const CHAT_PASSWORD='Xup654bjo4'
-const CHAT_DATABASE=chat
+const CHAT_DATABASE='chat'
 
 var conn = mysql.createPool({
     host: CHAT_HOST,
