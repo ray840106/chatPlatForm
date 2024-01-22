@@ -56,7 +56,7 @@ app.use(
  ******************************************************************/
 app.set('views', path.join(__dirname, './views'));
 app.set('view engine', 'ejs');
-// app.use(express.static(path.resolve(__dirname, './dist')))
+app.use(express.static(path.resolve(__dirname, './dist')))
 app.use(express.static('public')); //to access the files in public folder
 app.use(cors()); // it enables all cors requests
 app.use(fileUpload());
