@@ -6,8 +6,21 @@ const jwt = require("jsonwebtoken");
 const { HmacSHA256 } = require("crypto-js");
 const Base64 = require("crypto-js/enc-base64");
 const ecpay_payment = require('ecpay_aio_nodejs');
-const {SECRET,LINE_RETURN_HOST,LINE_RETURN_CONFIRM_URL,LINE_RETURN_CANCEL_URL,LINE_PAY_SECRET,LINE_PAY_SITE,LINE_PAY_VERSION,LINE_PAY_CHANNELID
-    ,ECPAY_MERCHANTID, ECPAY_HASHKEY, ECPAY_HASHIV, HOST}=process.env;
+//const {SECRET,LINE_RETURN_HOST,LINE_RETURN_CONFIRM_URL,LINE_RETURN_CANCEL_URL,LINE_PAY_SECRET,LINE_PAY_SITE,LINE_PAY_VERSION,LINE_PAY_CHANNELID,ECPAY_MERCHANTID, ECPAY_HASHKEY, ECPAY_HASHIV, HOST}=process.env;
+
+const HOST='https://social.azurewebsites.net'
+const SECRET='rayChatPlat'
+const LINE_RETURN_HOST='https://social.azurewebsites.net'
+const LINE_RETURN_CONFIRM_URL='API/linePay/confirm'
+const LINE_RETURN_CANCEL_URL='API/linePay/cancel'
+const LINE_PAY_CHANNELID='2002302926'
+const LINE_PAY_SECRET='8ae7c30ea299c2f7f43da0b73022f6a4'
+const LINE_PAY_VERSION='v3'
+const LINE_PAY_SITE='https://sandbox-api-pay.line.me'
+const ECPAY_MERCHANTID='3002599'
+const ECPAY_HASHKEY='spPjZn66i0OhqJsQ'
+const ECPAY_HASHIV='hT5OJckN45isQTTs'
+
 const options = {
     OperationMode: 'Test', //Test or Production
     MercProfile: {
