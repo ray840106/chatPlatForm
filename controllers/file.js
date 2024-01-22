@@ -10,6 +10,12 @@ const images = require("images");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require('uuid');
 
+const PROTOCOL=https
+const HOSTNAME='social.azurewebsites.net'
+const SECRET='rayChatPlat'
+const EXPIRES_IN='3h'
+const PORT=8080
+
 /**
  * 上傳檔案
  * @param myFile 檔案
@@ -116,7 +122,7 @@ async function getHeadshot(request, response) {
     let loginToken = (params.loginInfo != undefined) ? params.loginInfo.loginToken : null
 
     try {
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
         // 驗證信箱格式
@@ -145,7 +151,7 @@ async function uploadHeadshot(request, response) {
     let loginToken = (params.loginInfo != undefined) ? params.loginInfo.loginToken : null
 
     try {
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
         let get_file = await getFile('headshot',login_email)
@@ -192,10 +198,10 @@ async function uploadMessage(request, response) {
 
     const connection = await conn.getConnection();
     try {
-        let decoded = jwt.verify(loginInfo.loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginInfo.loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
-        let item = jwt.verify(token, process.env.SECRET);
+        let item = jwt.verify(token, SECRET);
         let ROOMID = item.ROOMID
 
         if (request.files) {
@@ -211,9 +217,9 @@ async function uploadMessage(request, response) {
             await upload(request.files.file,login_email,'message').then(async function (res) {
                 if (res.done_TF) {
                     let formatUrl = {
-                        protocol: process.env.PROTOCOL,
-                        hostname: process.env.HOSTNAME,
-                        port: process.env.PORT,
+                        protocol: PROTOCOL,
+                        hostname: HOSTNAME,
+                        port: PORT,
                         pathname: res.uploadFile.path,
                     };
                     let fileUrl = url.format(formatUrl)
