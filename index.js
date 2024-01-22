@@ -13,7 +13,7 @@ const fileUpload = require('express-fileupload');
 const logConfig = require("./config/log4js.json");
 require('dotenv').config()
 
-const SECRET=rayChatPlat
+const SECRET='rayChatPlat'
 
 const app = express();
 const port = '8080'
