@@ -10,7 +10,7 @@ const images = require("images");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require('uuid');
 
-const PROTOCOL=https
+const PROTOCOL='https'
 const HOSTNAME='social.azurewebsites.net'
 const SECRET='rayChatPlat'
 const EXPIRES_IN='3h'
