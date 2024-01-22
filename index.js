@@ -1,5 +1,5 @@
 // 引入 library
-require('dotenv').config()
+
 const cors = require('cors')
 const path = require('path')
 const debug = require('debug')
@@ -11,7 +11,7 @@ const bodyParser = require('body-parser');
 const session = require("express-session");
 const fileUpload = require('express-fileupload');
 const logConfig = require("./config/log4js.json");
-
+require('dotenv').config()
 const app = express();
 const port = process.env.PORT || '5001'
 
