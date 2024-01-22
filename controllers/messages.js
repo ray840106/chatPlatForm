@@ -2,6 +2,8 @@ let conn = require('../models/db_conn')
 let table_messages = require('../models/table_messages')
 const jwt = require("jsonwebtoken");
 
+const SECRET='rayChatPlat'
+
 /**
  * 新增聊天室訊息
  */
@@ -14,10 +16,10 @@ async function insMessage(request, response) {
     const connection = await conn.getConnection();
     try {
 
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
-        let item = jwt.verify(data.item.token, process.env.SECRET);
+        let item = jwt.verify(data.item.token, SECRET);
         let ROOMID = item.ROOMID
 
         let text = data.item.text;
@@ -60,7 +62,7 @@ async function getMessage(request, response) {
 
     const connection = await conn.getConnection();
     try {
-        let item = jwt.verify(data.item.token, process.env.SECRET);
+        let item = jwt.verify(data.item.token, SECRET);
         let ROOMID = item.ROOMID
 
         // 驗證信箱格式
