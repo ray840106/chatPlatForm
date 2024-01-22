@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const mobile = require('is-mobile');
 const {v4: uuidv4} = require("uuid");
 const { OAuth2Client } = require('google-auth-library')
-//const { SECRET, EXPIRES_IN, GOOGLE_CLIENT_ID } = process.env;
+//const { SECRET, EXPIRES_IN, GOOGLE_CLIENT_ID } = ;
 const SECRET=rayChatPlat
 const EXPIRES_IN=3h
 const GOOGLE_CLIENT_ID=444195588094-gl9l6klt2v52a0sksl2vf29aslpd1m1c.apps.googleusercontent.com
@@ -371,7 +371,7 @@ async function tokenRefresh(request, response) {
     let loginToken = (params.loginInfo != undefined) ? params.loginInfo.loginToken : null
     const connection = await conn.getConnection();
     try {
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, .SECRET);
         let login_email = decoded.EMAIL;
 
         let user_info = await table_user.userInfo(connection,login_email)
