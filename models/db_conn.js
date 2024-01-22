@@ -1,11 +1,16 @@
 require('dotenv').config()
 let mysql = require('mysql2/promise');
 
+const CHAT_HOST='socialplatfroms.mysql.database.azure.com'
+const CHAT_USER='socialplatfroms'
+const CHAT_PASSWORD='Xup654bjo4'
+const CHAT_DATABASE=chat
+
 var conn = mysql.createPool({
-    host: process.env.CHAT_HOST,
-    user: process.env.CHAT_USER,
-    password: process.env.CHAT_PASSWORD,
-    database: process.env.CHAT_DATABASE,
+    host: CHAT_HOST,
+    user: CHAT_USER,
+    password: CHAT_PASSWORD,
+    database: CHAT_DATABASE,
     port: 3306,
     multipleStatements:true,
 });
