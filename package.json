@@ -4,7 +4,7 @@
   "description": "社群平台後端",
   "main": "index.js",
   "scripts": {
-    "server": "node index.js"
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
