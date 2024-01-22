@@ -14,7 +14,7 @@ const logConfig = require("./config/log4js.json");
 require('dotenv').config()
 const app = express();
 const port = process.env.PORT || '5001'
-
+console.log('process.env',process.env.PORT)
 const SocketServer = require('ws').Server
 
 app.use(express.json({limit: '50mb'}));
