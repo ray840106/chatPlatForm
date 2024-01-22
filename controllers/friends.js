@@ -5,6 +5,9 @@ let table_friends = require('../models/table_friends')
 const {getFile} = require("./headFile");
 const jwt = require("jsonwebtoken");
 
+const SECRET='rayChatPlat'
+const EXPIRES_IN='3h'
+
 /**
  * 新增好友
  */
@@ -17,7 +20,7 @@ async function insFriend(request, response) {
 
     const connection = await conn.getConnection();
     try {
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
         let email = data.email
@@ -110,7 +113,7 @@ async function getFriends(request, response) {
         if (!loginToken){
             response.status(200).json({status: 'success', message: 'Success'})
         }
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
         // 驗證信箱格式
@@ -118,7 +121,7 @@ async function getFriends(request, response) {
         for (let i=0;i<get_friends.length;i++) {
             let get_file = await getFile('headshot',get_friends[i]['FRIEND_EMAIL'])
             get_friends[i]['headshot'] = get_file.data.length>0 ? get_file.data[0].file_path:'';
-            get_friends[i]['token'] = jwt.sign(get_friends[i],  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            get_friends[i]['token'] = jwt.sign(get_friends[i],  SECRET, { expiresIn: EXPIRES_IN });
         }
 
         response.status(200).json({
@@ -154,10 +157,10 @@ async function getFriend(request, response) {
 
     const connection = await conn.getConnection();
     try {
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
-        let item = jwt.verify(data.item.token, process.env.SECRET);
+        let item = jwt.verify(data.item.token, SECRET);
         let FRIEND_EMAIL = item.FRIEND_EMAIL
 
         // 驗證信箱格式
@@ -165,7 +168,7 @@ async function getFriend(request, response) {
         for (let i=0;i<get_friend.length;i++) {
             let get_file = await getFile('headshot',get_friend[i]['EMAIL'])
             get_friend[i]['headshot'] = get_file.data.length>0 ? get_file.data[0].file_path:'';
-            get_friend[i]['token'] = jwt.sign(get_friend[i],  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            get_friend[i]['token'] = jwt.sign(get_friend[i],  SECRET, { expiresIn: EXPIRES_IN });
         }
 
         response.status(200).json({
@@ -202,10 +205,10 @@ async function updFriend(request, response) {
 
     const connection = await conn.getConnection();
     try {
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
-        let item = jwt.verify(data.item.token, process.env.SECRET);
+        let item = jwt.verify(data.item.token, SECRET);
         let FRIEND_EMAIL = item.FRIEND_EMAIL
         let STATUS = data.item.STATUS
 
@@ -226,7 +229,7 @@ async function updFriend(request, response) {
         // 驗證信箱格式
         let get_friends = await table_friends.getFriends(connection,login_email)
         for (let i=0;i<get_friends.length;i++) {
-            get_friends[i]['token'] = jwt.sign(get_friends[i],  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            get_friends[i]['token'] = jwt.sign(get_friends[i],  SECRET, { expiresIn: EXPIRES_IN });
         }
 
         // sql error rollback
@@ -276,10 +279,10 @@ async function delFriend(request, response) {
 
     const connection = await conn.getConnection();
     try {
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
-        let item = jwt.verify(data.item.token, process.env.SECRET);
+        let item = jwt.verify(data.item.token, SECRET);
         let FRIEND_EMAIL = item.FRIEND_EMAIL
 
         await connection.beginTransaction()
@@ -312,7 +315,7 @@ async function delFriend(request, response) {
         // 驗證信箱格式
         let get_friends = await table_friends.getFriends(connection,login_email)
         for (let i=0;i<get_friends.length;i++) {
-            get_friends[i]['token'] = jwt.sign(get_friends[i],  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            get_friends[i]['token'] = jwt.sign(get_friends[i],  SECRET, { expiresIn: EXPIRES_IN });
         }
 
         response.status(200).json({
