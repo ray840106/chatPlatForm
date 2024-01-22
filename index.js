@@ -47,7 +47,9 @@ console.error = createLogProxy("error", logger);
  ******************************************************************/
 app.use(
     session({
-        secret: 'chatPlatform'
+        secret: process.env.secret,
+        resave: true, // 重新造訪session是否生效
+        saveUninitialized: true
     })
 );
 
