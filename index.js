@@ -12,9 +12,11 @@ const session = require("express-session");
 const fileUpload = require('express-fileupload');
 const logConfig = require("./config/log4js.json");
 require('dotenv').config()
+
+const SECRET=rayChatPlat
+
 const app = express();
-const port = process.env.PORT || '5001'
-console.log('process.env',process.env.PORT)
+const port = '8080'
 const SocketServer = require('ws').Server
 
 app.use(express.json({limit: '50mb'}));
@@ -47,7 +49,7 @@ console.error = createLogProxy("error", logger);
  ******************************************************************/
 app.use(
     session({
-        secret: process.env.SECRET,
+        secret: SECRET,
         resave: true, // 重新造訪session是否生效
         saveUninitialized: true
     })
@@ -86,11 +88,11 @@ wss.on('connection', ws => {
         data = data.toString()
         let token = JSON.parse(data)
         if (token.hasOwnProperty('roomData')) {
-            ws.ROOMID = jwt.verify(token.roomData, process.env.SECRET).ROOMID;
-            ws.EMAIL = jwt.verify(token.roomData, process.env.SECRET).EMAIL;
+            ws.ROOMID = jwt.verify(token.roomData, SECRET).ROOMID;
+            ws.EMAIL = jwt.verify(token.roomData, SECRET).EMAIL;
         }
         if (token.hasOwnProperty('updData')) {
-            decoded = jwt.verify(token.updData.token, process.env.SECRET);
+            decoded = jwt.verify(token.updData.token, SECRET);
         }
 
 
