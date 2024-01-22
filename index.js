@@ -16,7 +16,7 @@ require('dotenv').config()
 const SECRET='rayChatPlat'
 
 const app = express();
-const port = '8080'
+const port = 8080
 const SocketServer = require('ws').Server
 
 app.use(express.json({limit: '50mb'}));
