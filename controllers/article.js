@@ -8,6 +8,9 @@ const {getFile} = require("./headFile");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require('uuid');
 
+const SECRET='rayChatPlat'
+const EXPIRES_IN='3h'
+
 /**
  * 新增文章
  */
@@ -20,7 +23,7 @@ async function insArticle(request, response) {
     const connection = await conn.getConnection();
     await connection.beginTransaction()
     try {
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
         let article_id = uuidv4()
@@ -61,7 +64,7 @@ async function insArticle(request, response) {
             item['sn'] = 0;
             item['haveReply'] = false;
             item['haveLike'] = false;
-            item['token'] = jwt.sign(item,  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            item['token'] = jwt.sign(item,  SECRET, { expiresIn: EXPIRES_IN });
         }
 
         await connection.commit()
@@ -102,13 +105,13 @@ async function getArticles(request, response) {
 
     const connection = await conn.getConnection();
     try {
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
         let friend_email = ''
         if (data.hasOwnProperty('friend')) {
             if (data.friend != '' && data.friend != null) {
-                let item = jwt.verify(data.friend, process.env.SECRET);
+                let item = jwt.verify(data.friend, SECRET);
                 friend_email = item.FRIEND_EMAIL
             }
         }
@@ -132,7 +135,7 @@ async function getArticles(request, response) {
             item['sn'] = 0;
             item['haveReply'] = article_reply.length>0;
             item['haveLike'] = article_like.length>0;
-            item['token'] = jwt.sign(item,  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            item['token'] = jwt.sign(item,  SECRET, { expiresIn: EXPIRES_IN });
         }
 
         response.status(200).json({
@@ -168,10 +171,10 @@ async function getFriendArticle(request, response) {
 
     const connection = await conn.getConnection();
     try {
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
-        let item = jwt.verify(data.item.token, process.env.SECRET);
+        let item = jwt.verify(data.item.token, SECRET);
         let FRIEND_EMAIL = item.FRIEND_EMAIL
 
         let get_article = await table_article.getArticles(connection,FRIEND_EMAIL)
@@ -190,7 +193,7 @@ async function getFriendArticle(request, response) {
             item['sn'] = 0;
             item['haveReply'] = article_reply.length>0;
             item['haveLike'] = article_like.length>0;
-            item['token'] = jwt.sign(item,  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            item['token'] = jwt.sign(item,  SECRET, { expiresIn: EXPIRES_IN });
         }
 
         response.status(200).json({
@@ -228,10 +231,10 @@ async function updArticle(request, response) {
 
     const connection = await conn.getConnection();
     try {
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
-        let item = jwt.verify(data.item.token, process.env.SECRET);
+        let item = jwt.verify(data.item.token, SECRET);
         let FRIEND_EMAIL = item.FRIEND_EMAIL
         let STATUS = data.item.STATUS
 
@@ -252,7 +255,7 @@ async function updArticle(request, response) {
         // 驗證信箱格式
         let get_friends = await table_friends.getFriends(connection,login_email)
         for (let i=0;i<get_friends.length;i++) {
-            get_friends[i]['token'] = jwt.sign(get_friends[i],  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            get_friends[i]['token'] = jwt.sign(get_friends[i],  SECRET, { expiresIn: EXPIRES_IN });
         }
 
         // sql error rollback
@@ -301,10 +304,10 @@ async function delArticle(request, response) {
 
     const connection = await conn.getConnection();
     try {
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
-        let item = jwt.verify(data.item.token, process.env.SECRET);
+        let item = jwt.verify(data.item.token, SECRET);
         let ARTICLE_ID = item.ARTICLE_ID
 
 
@@ -331,7 +334,7 @@ async function delArticle(request, response) {
             item['sn'] = 0;
             item['haveReply'] = article_reply.length>0;
             item['haveLike'] = article_like.length>0;
-            item['token'] = jwt.sign(item,  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            item['token'] = jwt.sign(item,  SECRET, { expiresIn: EXPIRES_IN });
         }
 
         response.status(200).json({
@@ -368,10 +371,10 @@ async function likeArticle(request, response) {
     const connection = await conn.getConnection();
     await connection.beginTransaction()
     try {
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
-        let item = jwt.verify(data.item.token, process.env.SECRET);
+        let item = jwt.verify(data.item.token, SECRET);
         let ARTICLE_ID = item.ARTICLE_ID
 
         let get_article_like = [];
@@ -437,7 +440,7 @@ async function likeArticle(request, response) {
             item['sn'] = 0;
             item['haveReply'] = article_reply.length>0;
             item['haveLike'] = article_like.length>0;
-            item['token'] = jwt.sign(item,  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            item['token'] = jwt.sign(item,  SECRET, { expiresIn: EXPIRES_IN });
         }
 
         let article_reply = await table_article_reply.getArticleReply(connection,ARTICLE_ID);
@@ -452,7 +455,7 @@ async function likeArticle(request, response) {
             replyItem['headshot'] = get_file.data.length>0 ? get_file.data[0].file_path:'';
             replyItem['haveReply'] = article_reply2.length>0;
             replyItem['haveLike'] = article_like.length>0;
-            replyItem['token'] = jwt.sign(replyItem,  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            replyItem['token'] = jwt.sign(replyItem,  SECRET, { expiresIn: EXPIRES_IN });
         }
 
         await connection.commit()
@@ -494,11 +497,11 @@ async function replyArticle(request, response) {
     const connection = await conn.getConnection();
     await connection.beginTransaction()
     try {
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
         let replyItem = data.replyItem;
 
-        let item = jwt.verify(replyItem.token, process.env.SECRET);
+        let item = jwt.verify(replyItem.token, SECRET);
         let ARTICLE_ID = item.ARTICLE_ID
         let CONTENT = replyItem.replyText
 
@@ -552,7 +555,7 @@ async function replyArticle(request, response) {
             replyItem['headshot'] = get_file.data.length>0 ? get_file.data[0].file_path:'';
             replyItem['haveReply'] = article_reply2.length>0;
             replyItem['haveLike'] = article_like.length>0;
-            replyItem['token'] = jwt.sign(replyItem,  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            replyItem['token'] = jwt.sign(replyItem,  SECRET, { expiresIn: EXPIRES_IN });
         }
 
         let get_article = await table_article.getArticles(connection,'',ARTICLE_ID)
@@ -571,7 +574,7 @@ async function replyArticle(request, response) {
             item['sn'] = 0;
             item['haveReply'] = article_reply.length>0;
             item['haveLike'] = article_like.length>0;
-            item['token'] = jwt.sign(item,  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            item['token'] = jwt.sign(item,  SECRET, { expiresIn: EXPIRES_IN });
         }
 
         await connection.commit()
@@ -612,11 +615,11 @@ async function geyReplyArticle(request, response) {
 
     const connection = await conn.getConnection();
     try {
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
         let replyItem = data.replyItem;
-        let item = jwt.verify(replyItem.token, process.env.SECRET);
+        let item = jwt.verify(replyItem.token, SECRET);
         let ARTICLE_ID = item.ARTICLE_ID
 
         if (item.hasOwnProperty('REPLY_ARTICLE_ID')) {
@@ -636,7 +639,7 @@ async function geyReplyArticle(request, response) {
             replyItem['headshot'] = get_file.data.length>0 ? get_file.data[0].file_path:'';
             replyItem['haveReply'] = article_reply2.length>0;
             replyItem['haveLike'] = article_like.length>0;
-            replyItem['token'] = jwt.sign(replyItem,  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            replyItem['token'] = jwt.sign(replyItem,  SECRET, { expiresIn: EXPIRES_IN });
         }
 
         let get_article = await table_article.getArticles(connection,'',ARTICLE_ID)
@@ -655,7 +658,7 @@ async function geyReplyArticle(request, response) {
             item['sn'] = 0;
             item['haveReply'] = article_reply.length>0;
             item['haveLike'] = article_like.length>0;
-            item['token'] = jwt.sign(item,  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            item['token'] = jwt.sign(item,  SECRET, { expiresIn: EXPIRES_IN });
         }
 
         response.status(200).json({
@@ -694,11 +697,11 @@ async function geyBackReplyArticle(request, response) {
 
     const connection = await conn.getConnection();
     try {
-        let decoded = jwt.verify(loginToken, process.env.SECRET);
+        let decoded = jwt.verify(loginToken, SECRET);
         let login_email = decoded.EMAIL;
 
         let replyItem = data.replyItem;
-        let item = jwt.verify(replyItem.token, process.env.SECRET);
+        let item = jwt.verify(replyItem.token, SECRET);
         let ARTICLE_ID = item.ARTICLE_ID
 
         if (item.hasOwnProperty('REPLY_ARTICLE_ID')) {
@@ -719,7 +722,7 @@ async function geyBackReplyArticle(request, response) {
             replyItem['headshot'] = get_file.data.length>0 ? get_file.data[0].file_path:'';
             replyItem['haveReply'] = article_reply2.length>0;
             replyItem['haveLike'] = article_like.length>0;
-            replyItem['token'] = jwt.sign(replyItem,  process.env.SECRET, { expiresIn: process.env.EXPIRES_IN });
+            replyItem['token'] = jwt.sign(replyItem,  SECRET, { expiresIn: EXPIRES_IN });
         }
 
 
