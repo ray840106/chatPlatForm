@@ -47,7 +47,7 @@ console.error = createLogProxy("error", logger);
  ******************************************************************/
 app.use(
     session({
-        secret: process.env.secret,
+        secret: process.env.SECRET,
         resave: true, // 重新造訪session是否生效
         saveUninitialized: true
     })
